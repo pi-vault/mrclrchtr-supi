@@ -1,7 +1,7 @@
 {
   "name": "@mrclrchtr/supi-tree-sitter",
   "version": "1.10.0",
-  "description": "SuPi Tree-sitter extension — structural AST analysis for pi",
+  "description": "SuPi Tree-sitter structural AST analysis library",
   "license": "MIT",
   "repository": {
     "type": "git",
@@ -11,9 +11,8 @@
     "access": "public"
   },
   "keywords": [
-    "pi-package",
     "pi",
-    "pi-coding-agent"
+    "tree-sitter"
   ],
   "files": [
     "src/**/*.ts",
@@ -35,22 +34,7 @@
     "@mrclrchtr/supi-core": "workspace:*",
     "web-tree-sitter": "^0.26.8"
   },
-  "peerDependencies": {
-    "@earendil-works/pi-ai": "*",
-    "@earendil-works/pi-coding-agent": "*",
-    "typebox": "*"
-  },
-  "peerDependenciesMeta": {
-    "@earendil-works/pi-ai": {
-      "optional": true
-    },
-    "@earendil-works/pi-coding-agent": {
-      "optional": true
-    },
-    "typebox": {
-      "optional": true
-    }
-  },
+
   "devDependencies": {
     "@mrclrchtr/supi-code-intelligence": "workspace:*",
     "@davisvaughan/tree-sitter-r": "1.2.0",
@@ -72,12 +56,7 @@
     "vitest": "4.1.7",
     "@mrclrchtr/supi-test-utils": "workspace:*"
   },
-  "pi": {
-    "extensions": [
-      "./src/extension.ts"
-    ],
-    "image": "https://raw.githubusercontent.com/mrclrchtr/supi/main/packages/supi-tree-sitter/assets/logo.png"
-  },
+
   "bundledDependencies": [
     "@mrclrchtr/supi-code-runtime",
     "@mrclrchtr/supi-core"
@@ -85,7 +64,6 @@
   "main": "src/api.ts",
   "exports": {
     "./api": "./src/api.ts",
-    "./extension": "./src/extension.ts",
     "./package.json": "./package.json",
     "./provider/tree-sitter-provider": "./src/provider/tree-sitter-provider.ts"
   }
