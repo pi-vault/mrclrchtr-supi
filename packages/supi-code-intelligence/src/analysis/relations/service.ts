@@ -7,6 +7,9 @@
  * resolve the target first and pass the coordinates.
  */
 
+import { collectCallees } from "./callees.ts";
+import { collectCallers } from "./callers.ts";
+import { collectImplementations } from "./implementations.ts";
 import type { RelationsResult, RelationsServiceDeps, RelationsServiceInput } from "./types.ts";
 
 /**
@@ -27,19 +30,38 @@ export async function executeRelationsService(
     };
   }
 
-  // For now, this returns a placeholder result.
-  // Full target resolution and provider dispatch will be integrated
-  // when the tool executors are updated.
-  return {
-    kind: input.kind === "callees" ? "callees" : "callers",
-    targetName: "symbol",
-    ...(input.kind === "callees"
-      ? { callees: [], confidence: "unavailable" as const }
-      : {
-          references: [],
-          externalCount: 0,
-          evidence: "semantic-references" as const,
-          confidence: "unavailable" as const,
-        }),
-  } as RelationsResult;
+  const maxResults = input.maxResults;
+  const targetFile = input.file ?? deps.cwd;
+  const targetLine = input.line ?? 1;
+  const targetChar = input.character ?? 1;
+
+  switch (input.kind) {
+    case "callers":
+      return collectCallers(
+        targetFile,
+        { line: targetLine, character: targetChar },
+        input.symbol ?? null,
+        deps,
+        maxResults,
+      );
+
+    case "implementations":
+      return collectImplementations(
+        targetFile,
+        { line: targetLine, character: targetChar },
+        input.symbol ?? null,
+        deps,
+        maxResults,
+      );
+
+    case "callees":
+      return collectCallees(
+        targetFile,
+        targetLine,
+        targetChar,
+        input.symbol ?? null,
+        deps,
+        maxResults,
+      );
+  }
 }

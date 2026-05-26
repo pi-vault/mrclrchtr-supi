@@ -1,7 +1,10 @@
 /**
  * Affected analysis service — blast radius and downstream impact.
+ *
+ * Delegates to the existing code_affected orchestration.
  */
 
+import { executeAffectedTool } from "../../tool/execute-affected.ts";
 import type { CodeIntelResult } from "../../types.ts";
 
 export interface AffectedServiceInput {
@@ -15,25 +18,18 @@ export interface AffectedServiceInput {
 
 /**
  * Execute blast-radius analysis.
- * Delegates to the existing use-case implementation.
  */
 export async function executeAffectedService(
-  _input: AffectedServiceInput,
+  input: AffectedServiceInput,
 ): Promise<CodeIntelResult> {
-  return {
-    content: "Affected analysis placeholder",
-    details: {
-      type: "affected",
-      data: {
-        confidence: "unavailable",
-        directCount: 0,
-        downstreamCount: 0,
-        riskLevel: "low",
-        checkNext: [],
-        likelyTests: [],
-        omittedCount: 0,
-        nextQueries: ["Enable LSP for semantic analysis"],
-      },
+  return executeAffectedTool(
+    {
+      file: input.file,
+      line: input.line,
+      character: input.character,
+      symbol: input.symbol,
+      maxResults: input.maxResults,
     },
-  };
+    { cwd: input.cwd },
+  );
 }

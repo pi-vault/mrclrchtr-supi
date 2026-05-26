@@ -3,8 +3,6 @@
 
 import type { BeforeAgentStartEventResult, ExtensionAPI } from "@earendil-works/pi-coding-agent";
 import { createCodeIntelligenceApp } from "./app/create-code-intelligence-app.ts";
-import { defaultLspToolPromptSurfaces } from "./lsp/guidance.ts";
-import { registerLspTools } from "./lsp/register-tools.ts";
 import { buildArchitectureModel } from "./model.ts";
 import { renderOverview } from "./presentation/markdown/overview.ts";
 import { registerDiagnosticInjectionHandlers } from "./substrate/semantic/diagnostics.ts";
@@ -15,7 +13,9 @@ import { registerLspSettings } from "./substrate/semantic/settings.ts";
 import { createLspAdapterState } from "./substrate/semantic/state.ts";
 import { registerTsSessionLifecycle } from "./substrate/structural/lifecycle.ts";
 import { createTsAdapterState } from "./substrate/structural/state.ts";
-import { registerCodeIntelligenceTools } from "./tool/register-tools.ts";
+import { registerCodeIntelligenceTools } from "./tool/families/code/register.ts";
+import { defaultLspToolPromptSurfaces } from "./tool/families/lsp/guidance.ts";
+import { registerLspTools } from "./tool/families/lsp/register.ts";
 import { registerCiStatusCommand } from "./ui/code-intelligence-status-command.ts";
 import { registerLspMessageRenderer } from "./ui/lsp-message-renderer.ts";
 import { buildOverviewData } from "./use-case/build-overview.ts";
@@ -23,10 +23,8 @@ import { buildOverviewData } from "./use-case/build-overview.ts";
 const OVERVIEW_CUSTOM_TYPE = "code-intelligence-overview";
 
 export default function codeIntelligenceExtension(pi: ExtensionAPI) {
-  // Create the app composition root — registers session_start/session_shutdown
   const app = createCodeIntelligenceApp(pi);
 
-  // Adapter states (substrate-owned — will be wired to sessions in later tasks)
   const lspState = createLspAdapterState();
   const tsState = createTsAdapterState();
 

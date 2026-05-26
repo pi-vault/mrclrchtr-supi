@@ -1,10 +1,10 @@
 /**
  * Map analysis service — typed data generation for factual code maps.
  *
- * Returns typed map data. Markdown rendering is handled by
- * presentation/markdown/map.ts.
+ * Delegates to the existing code_map orchestration.
  */
 
+import { executeMapTool } from "../../tool/execute-map.ts";
 import type { MapDetails } from "../../types.ts";
 
 export interface MapServiceInput {
@@ -20,17 +20,19 @@ export interface MapServiceResult {
 
 /**
  * Create a factual code map from the given input.
- * Delegates to the existing use-case implementation.
  */
-export async function createAnalysisMapService(_input: MapServiceInput): Promise<MapServiceResult> {
+export async function createAnalysisMapService(input: MapServiceInput): Promise<MapServiceResult> {
+  const result = await executeMapTool({ path: input.path }, { cwd: input.cwd });
   return {
-    content: "Map analysis placeholder",
-    details: {
-      scope: _input.path ?? null,
-      totalFiles: 0,
-      childDirectoryCount: 0,
-      landmarkCount: 0,
-      nextQueries: ["Provide a path to scope the map"],
-    },
+    content: result.content,
+    details: (result.details?.type === "map"
+      ? result.details.data
+      : {
+          scope: input.path ?? null,
+          totalFiles: 0,
+          childDirectoryCount: 0,
+          landmarkCount: 0,
+          nextQueries: [],
+        }) as MapDetails,
   };
 }

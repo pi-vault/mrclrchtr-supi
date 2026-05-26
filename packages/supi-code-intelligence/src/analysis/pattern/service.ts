@@ -1,7 +1,10 @@
 /**
- * Pattern analysis service — literal, regex, and structured search.
+ * Pattern search service — literal, regex, or structured search.
+ *
+ * Delegates to the existing code_pattern orchestration.
  */
 
+import { executePatternTool } from "../../tool/execute-pattern.ts";
 import type { CodeIntelResult } from "../../types.ts";
 
 export interface PatternServiceInput {
@@ -17,20 +20,18 @@ export interface PatternServiceInput {
 
 /**
  * Execute a pattern search.
- * Delegates to the existing use-case implementation.
  */
-export async function executePatternService(_input: PatternServiceInput): Promise<CodeIntelResult> {
-  return {
-    content: "Pattern search placeholder",
-    details: {
-      type: "search",
-      data: {
-        confidence: "unavailable",
-        scope: null,
-        candidateCount: 0,
-        omittedCount: 0,
-        nextQueries: [],
-      },
+export async function executePatternService(input: PatternServiceInput): Promise<CodeIntelResult> {
+  return executePatternTool(
+    {
+      path: input.path,
+      pattern: input.pattern,
+      regex: input.regex,
+      kind: input.kind,
+      maxResults: input.maxResults,
+      contextLines: input.contextLines,
+      summary: input.summary,
     },
-  };
+    { cwd: input.cwd },
+  );
 }

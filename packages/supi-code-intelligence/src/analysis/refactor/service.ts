@@ -1,7 +1,10 @@
 /**
  * Refactor analysis service — semantic rename operations.
+ *
+ * Delegates to the existing code_refactor orchestration.
  */
 
+import { executeRefactorTool } from "../../tool/execute-refactor.ts";
 import type { CodeIntelResult } from "../../types.ts";
 
 export interface RefactorServiceInput {
@@ -15,24 +18,25 @@ export interface RefactorServiceInput {
 
 /**
  * Execute a semantic refactor operation.
- * Delegates to the existing refactor implementation.
  */
 export async function executeRefactorService(
-  _input: RefactorServiceInput,
+  input: RefactorServiceInput,
 ): Promise<CodeIntelResult> {
-  return {
-    content: "Refactor analysis placeholder",
-    details: {
-      type: "brief",
-      data: {
-        confidence: "unavailable",
-        focusTarget: null,
-        startHere: [],
-        publicSurfaces: [],
-        dependencySummary: null,
-        omittedCount: 0,
-        nextQueries: [],
+  if (input.operation === "rename") {
+    return executeRefactorTool(
+      {
+        operation: input.operation,
+        file: input.file,
+        line: input.line,
+        character: input.character,
+        newName: input.newName,
       },
-    },
+      { cwd: input.cwd },
+    );
+  }
+
+  return {
+    content: `Unsupported refactor operation: "${input.operation}"`,
+    details: undefined,
   };
 }
