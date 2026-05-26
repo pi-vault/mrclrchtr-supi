@@ -330,9 +330,6 @@ importers:
         specifier: ^3.17.5
         version: 3.17.5
     devDependencies:
-      '@mrclrchtr/supi-code-intelligence':
-        specifier: workspace:*
-        version: link:../supi-code-intelligence
       '@mrclrchtr/supi-test-utils':
         specifier: workspace:*
         version: link:../supi-test-utils
@@ -428,9 +425,6 @@ importers:
       '@derekstride/tree-sitter-sql':
         specifier: 0.3.11
         version: 0.3.11
-      '@mrclrchtr/supi-code-intelligence':
-        specifier: workspace:*
-        version: link:../supi-code-intelligence
       '@mrclrchtr/supi-test-utils':
         specifier: workspace:*
         version: link:../supi-test-utils

@@ -36,7 +36,6 @@
   },
 
   "devDependencies": {
-    "@mrclrchtr/supi-code-intelligence": "workspace:*",
     "@davisvaughan/tree-sitter-r": "1.2.0",
     "@derekstride/tree-sitter-sql": "0.3.11",
     "@types/node": "25.9.1",
