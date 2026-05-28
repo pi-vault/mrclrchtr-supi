@@ -106,7 +106,21 @@ Best practices:
 
 These bullets are appended flat into the default system prompt's `Guidelines` section.
 
-Critical rule: **each bullet must name the tool explicitly**.
+Critical rule: **every bullet must name the tool explicitly**.
+
+Guidelines from every active tool land in a single flat list with no grouping and no per-tool headings.
+A bullet like `"Pass refresh: true to recover..."` is ambiguous — the model cannot tell which tool it belongs to.
+Write `"Pass refresh: true to code_health to recover..."` instead.
+
+```typescript
+// BAD — ambiguous in a flat list
+"Pass `refresh: true` to recover stale diagnostics."
+"Use `scope` to narrow to a specific file."
+
+// GOOD — every bullet names its tool
+"Pass `refresh: true` to code_health to recover stale diagnostics."
+"Use `scope` with code_health to narrow to a specific file."
+```
 
 ```typescript
 promptGuidelines: [
@@ -122,6 +136,7 @@ Best practices:
 - Add ordering guidance when needed.
 - Keep bullets narrow and concrete.
 - Do not write `Use this tool when ...` because the tool name is not added automatically.
+- For parameter-style bullets, include the tool name: `Pass <param> to <tool_name> to ...`.
 
 Repo behavior to remember:
 - bullets are trimmed
